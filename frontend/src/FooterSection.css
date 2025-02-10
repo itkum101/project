@@ -1,0 +1,60 @@
+/* Footer Section Styles */
+
+.footer {
+    background-color: #282c34;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+  .footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 20px;
+  }
+  
+  .footer-social,
+  .footer-contact {
+    max-width: 300px;
+  }
+  
+  .footer-social h3,
+  .footer-contact h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #61dafb;
+  }
+  
+  .footer-social ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-social ul li {
+    margin: 5px 0;
+  }
+  
+  .footer-social a {
+    color: #61dafb;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-social a:hover {
+    color: #21a1f1;
+  }
+  
+  .footer-contact p {
+    font-size: 1em;
+    margin: 5px 0;
+    color: #ddd;
+  }
+  
+  .footer-copyright {
+    font-size: 0.9em;
+    color: #aaa;
+    margin-top: 20px;
+  }
+  

@@ -1,0 +1,6 @@
+Flask
+Flask-SQLAlchemy
+Flask-Cors
+Flask-Migrate
+PyMySQL
+cryptography>=38.0.0

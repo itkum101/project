@@ -1,0 +1,61 @@
+/* Team Section Styles */
+
+.team {
+    padding: 60px 20px;
+    background-color: #f5f5f5;
+    color: #333;
+    text-align: center;
+  }
+  
+  .team-title {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #282c34;
+  }
+  
+  .team-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+  }
+  
+  .team-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .team-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+  }
+  
+  .team-name {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .team-role {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #61dafb;
+  }
+  
+  .team-description {
+    font-size: 1em;
+    color: #666;
+  }
+  
