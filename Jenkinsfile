@@ -30,15 +30,14 @@ pipeline {
                 }
             }
         }
-  stage('Build and Push Backend') {
+ stage('Build and Push Backend') {
     steps {
         script {
             // Build backend service using Docker Compose
             sh "docker-compose build backend"
-
-            // Tag the image with 'latest' and push it to Docker Hub
-            sh "docker tag $(docker-compose images -q backend) $BACKEND_IMAGE:latest"
             
+            // Push the image directly without tagging
+            sh "docker push $(docker-compose images -q backend)"
         }
     }
 }
@@ -48,13 +47,13 @@ stage('Build and Push Frontend') {
         script {
             // Build frontend service using Docker Compose
             sh "docker-compose build frontend"
-
-            // Tag the image with 'latest' and push it to Docker Hub
-            sh "docker tag $(docker-compose images -q frontend) $FRONTEND_IMAGE:latest"
-            // sh "docker push $FRONTEND_IMAGE:latest"
+            
+            // Push the image directly without tagging
+            sh "docker push $(docker-compose images -q frontend)"
         }
     }
 }
+
 
 
 
