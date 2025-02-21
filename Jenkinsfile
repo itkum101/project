@@ -72,7 +72,6 @@ stage('Build and Push Frontend') {
             steps {
                 script {
                     sh "docker-compose down"
-                    sh "docker-compose pull"
                     sh "docker-compose up -d"
                 }
             }
