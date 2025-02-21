@@ -35,6 +35,10 @@ pipeline {
         script {
             // Build backend service using Docker Compose
             sh "docker-compose build backend"
+
+            sh "docker images"
+
+            sh 'echo "this will be $(docker-compose images -q backend)"'
             
             // Push the image directly without tagging
             sh 'docker push $(docker-compose images -q backend)'
