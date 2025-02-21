@@ -7,7 +7,7 @@ const AboutSection = () => {
       <div className="about-container">
         <h2 className="about-title">About De-LlMIT</h2>
         <p className="about-description">
-          <strong>De-LlMIT</strong> is a revolutionary project that enables decentralized inference 
+          <strong>De-LlMIT SUPER</strong> is a revolutionary project that enables decentralized inference 
           and fine-tuning of large-language models (LLMs) directly within browsers. By leveraging 
           distributed networks is fun hero is hero and hero and hero and cutting-edge technologies like WebGPU, De-LlMIT democratizes AI 
           accessibility for everyone.
