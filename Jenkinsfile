@@ -37,7 +37,7 @@ pipeline {
             sh "docker-compose build backend"
             
             // Push the image directly without tagging
-            sh "docker push $(docker-compose images -q backend)"
+            sh 'docker push $(docker-compose images -q backend)'
         }
     }
 }
