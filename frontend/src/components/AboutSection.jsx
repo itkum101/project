@@ -14,7 +14,7 @@ const AboutSection = () => {
         </p>
         <div className="about-points">
           <div className="point">
-            <h3>Background</h3>
+            <h3>Background is fun</h3>
             <p>
               Traditional LLM inference is hardware-intensive and expensive. De-LlMIT overcomes 
               these challenges using peer-to-peer computing, making LLMs more accessible.
