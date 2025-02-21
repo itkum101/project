@@ -20,7 +20,40 @@ pipeline {
             }
         }
 
-        stage('Docker Login') {
+
+ stage('Build Backend') {
+    steps {
+        script {
+            // Build backend service using Docker Compose
+            sh "docker-compose build backend"
+
+        }
+    }
+}
+
+stage('Build  Frontend') {
+    steps {
+        script {
+            // Build frontend service using Docker Compose
+            sh "docker-compose build frontend"
+        
+        
+
+        }
+    }
+}
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh "docker-compose down"
+                    sh "docker-compose up -d"
+                }
+            }
+        }
+
+
+                stage('Docker Login') {
             steps {
                 script {
                     // Using Jenkins credentials for Docker Hub login
@@ -34,15 +67,11 @@ pipeline {
                 }
             }
         }
- stage('Build and Push Backend') {
+
+ stage(' Push Backend') {
     steps {
         script {
-            // Build backend service using Docker Compose
-            sh "docker-compose build backend"
 
-            sh "docker images"
-
-            sh 'echo "this will be $(docker-compose images -q backend)"'
             
             // Push the image directly without tagging
            sh 'docker tag $(docker images -q backend) $BACKEND_IMAGE:latest && docker push $BACKEND_IMAGE:latest'
@@ -51,11 +80,9 @@ pipeline {
     }
 }
 
-stage('Build and Push Frontend') {
+stage(' Push Frontend') {
     steps {
         script {
-            // Build frontend service using Docker Compose
-            sh "docker-compose build frontend"
             
             // Push the image directly without tagging
              sh 'docker tag $(docker images -q frontend) $FRONTEND_IMAGE:latest && docker push $FRONTEND_IMAGE:latest'
@@ -70,19 +97,6 @@ stage('Build and Push Frontend') {
 
 
 
-        stage('Deploy') {
-            steps {
-                script {
-                    sh "docker ps"
-                    sh "docker ps -a"
-                    sh "docker-compose down"
-                    sh "docker ps"
-                    sh "docker ps -a"
-                    sh "docker-compose up -d"
-                    sh "docker ps"
-                    sh "docker ps -a"
-                }
-            }
-        }
+
     }
 }
