@@ -49,7 +49,7 @@ stage('Build and Push Frontend') {
             sh "docker-compose build frontend"
             
             // Push the image directly without tagging
-            sh "docker push $(docker-compose images -q frontend)"
+            sh 'docker push $(docker-compose images -q frontend)'
         }
     }
 }
