@@ -5,20 +5,24 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: react_frontend
+    container_name: frontend
     working_dir: /app
-    volumes:
-      - ./frontend:/app
+    # volumes:
+    #   - ./frontend:/app
     ports:
-      - "5173:5173"
+      - "8000:8000"
+    environment:
+      - BACKEND_API_URL=https://api.subedimukti.com.np
     depends_on:
       - backend
+    networks:
+      - mynetwork
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: flask_backend
+    container_name: backend
     working_dir: /app
     volumes:
       - ./backend:/app
@@ -27,8 +31,15 @@ services:
     environment:
       FLASK_APP: app.py
       FLASK_RUN_HOST: 0.0.0.0
+      MYSQL_HOST: db  # This should be the name of the db service
+      MYSQL_PORT: 3306
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpasswordc
+      MYSQL_DATABASE: myapp
     depends_on:
       - db
+    networks:
+      - mynetwork
 
   db:
     image: mysql:8.0
@@ -39,10 +50,17 @@ services:
       MYSQL_DATABASE: myapp
       MYSQL_USER: user
       MYSQL_PASSWORD: userpasswordc
+      
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - mynetwork
 
 volumes:
   db_data:
+
+networks:
+  mynetwork:
+    driver: bridge

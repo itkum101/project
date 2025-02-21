@@ -17,7 +17,7 @@ RUN npm install -g serve
 
 
 # Expose the frontend port (the one used by the serve command)
-EXPOSE 5000
+EXPOSE 8000
 
 # Start the production server to serve the build
-CMD ["serve", "-s", "dist", "-l", "5000"]
+CMD ["serve", "-s", "dist", "-l", "8000"]

@@ -10,7 +10,10 @@ const FeaturesSection = () => {
   useEffect(() => {
     const fetchFeatures = async () => {
       try {
-        const response = await axios.get('http://backend-service:5000/features'); // Change URL if needed
+        const response = await axios.get(`https://api.subedimukti.com.np/features`);
+        console.log(response.data); // Debug the actual response
+
+
         setFeatures(response.data); // Set the fetched features to state
       } catch (error) {
         console.error('Error fetching features:', error);
