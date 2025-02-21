@@ -30,19 +30,14 @@ pipeline {
                 }
             }
         }
-
 stage('Build and Push Backend') {
     steps {
         script {
             // Build backend service using Docker Compose
             sh "docker-compose build backend"
 
-            // Tag the image with the project name and backend service name
-            sh "docker tag docker_ci_cd_backend:latest $BACKEND_IMAGE:$BUILD_VERSION"
-            sh "docker push $BACKEND_IMAGE:$BUILD_VERSION"
-
-            // Tag and push the 'latest' tag
-            sh "docker tag $BACKEND_IMAGE:$BUILD_VERSION $BACKEND_IMAGE:latest"
+            // Tag the image with 'latest' and push it to Docker Hub
+            sh "docker tag $(docker-compose images -q backend) $BACKEND_IMAGE:latest"
             sh "docker push $BACKEND_IMAGE:latest"
         }
     }
@@ -54,16 +49,13 @@ stage('Build and Push Frontend') {
             // Build frontend service using Docker Compose
             sh "docker-compose build frontend"
 
-            // Tag the image for frontend
-            sh "docker tag docker_ci_cd_frontend:latest $FRONTEND_IMAGE:$BUILD_VERSION"
-            sh "docker push $FRONTEND_IMAGE:$BUILD_VERSION"
-
-            // Tag and push the 'latest' tag for frontend
-            sh "docker tag $FRONTEND_IMAGE:$BUILD_VERSION $FRONTEND_IMAGE:latest"
+            // Tag the image with 'latest' and push it to Docker Hub
+            sh "docker tag $(docker-compose images -q frontend) $FRONTEND_IMAGE:latest"
             sh "docker push $FRONTEND_IMAGE:latest"
         }
     }
 }
+
 
 
         stage('Deploy') {
