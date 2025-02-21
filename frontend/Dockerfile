@@ -1,23 +1,26 @@
 # Use Node.js 18 Alpine as the base image
-FROM node:18-alpine
+FROM node:18-alpine AS build
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the application files
+# Copy package.json and package-lock.json first
+COPY package*.json ./
+
+# Install dependencies (only production)
+RUN npm install --omit=dev
+
+# Copy the rest of the application files
 COPY . .
 
-# Install dependencies
-RUN npm install
-    
 # Build the React app for production
 RUN npm run build
-# Install serve globally
-RUN npm install -g serve
 
+# Use the same base image
+FROM build AS runtime
 
-# Expose the frontend port (the one used by the serve command)
+# Expose the frontend port
 EXPOSE 8000
 
-# Start the production server to serve the build
-CMD ["serve", "-s", "dist", "-l", "8000"]
+# Start the production server
+CMD ["npx", "serve", "-s", "dist", "-l", "8000"]
