@@ -45,7 +45,8 @@ pipeline {
             sh 'echo "this will be $(docker-compose images -q backend)"'
             
             // Push the image directly without tagging
-            sh 'docker push $(docker images -q backend)'
+           sh 'docker tag $(docker images -q backend) $BACKEND_IMAGE:latest && docker push $BACKEND_IMAGE:latest'
+
         }
     }
 }
@@ -57,7 +58,8 @@ stage('Build and Push Frontend') {
             sh "docker-compose build frontend"
             
             // Push the image directly without tagging
-            sh 'docker push $(docker images -q frontend)'
+             sh 'docker tag $(docker images -q frontend) $FRONTEND_IMAGE:latest && docker push $FRONTEND_IMAGE:latest'
+
         }
     }
 }
