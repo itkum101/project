@@ -34,33 +34,7 @@ pipeline {
                 }
             }
         }
- stage('Build and Push Backend') {
-    steps {
-        script {
-            // Build backend service using Docker Compose
-            sh "docker-compose build backend"
 
-            sh "docker images"
-
-            sh 'echo "this will be $(docker-compose images -q backend)"'
-            
-            // Push the image directly without tagging
-            sh 'docker push $(docker-compose images -q backend)'
-        }
-    }
-}
-
-stage('Build and Push Frontend') {
-    steps {
-        script {
-            // Build frontend service using Docker Compose
-            sh "docker-compose build frontend"
-            
-            // Push the image directly without tagging
-            sh 'docker push $(docker-compose images -q frontend)'
-        }
-    }
-}
 
 
 
@@ -69,9 +43,7 @@ stage('Build and Push Frontend') {
         stage('Deploy') {
             steps {
                 script {
-                    sh "docker-compose down"
-                    sh "docker-compose pull"
-                    sh "docker-compose up -d"
+                    sh "docker-compose up --build"
                 }
             }
         }
