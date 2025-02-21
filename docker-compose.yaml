@@ -6,6 +6,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: frontend
+    image: frontend:latest
     working_dir: /app
     # volumes:
     #   - ./frontend:/app
@@ -23,6 +24,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: backend
+    image: backend:latest
     working_dir: /app
     volumes:
       - ./backend:/app
