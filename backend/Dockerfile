@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies (only production)
-RUN npm install --frozen-lockfile --only=production
+RUN npm install --omit=dev
 
 # Copy the rest of the application files
 COPY . .
