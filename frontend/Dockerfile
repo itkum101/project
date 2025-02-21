@@ -19,6 +19,9 @@ RUN npm run build
 # Use the same base image
 FROM build AS runtime
 
+# # Install serve globally
+RUN npm install -g serve
+
 # Expose the frontend port
 EXPOSE 8000
 
