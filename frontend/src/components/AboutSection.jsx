@@ -9,7 +9,7 @@ const AboutSection = () => {
         <p className="about-description">
           <strong>De-LlMIT</strong> is a revolutionary project that enables decentralized inference 
           and fine-tuning of large-language models (LLMs) directly within browsers. By leveraging 
-          distributed networks and cutting-edge technologies like WebGPU, De-LlMIT democratizes AI 
+          distributed networks is fun and cutting-edge technologies like WebGPU, De-LlMIT democratizes AI 
           accessibility for everyone.
         </p>
         <div className="about-points">
