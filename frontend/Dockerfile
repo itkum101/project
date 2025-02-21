@@ -10,8 +10,14 @@ COPY . .
 # Install dependencies
 RUN npm install
 
-# Expose the frontend port
-EXPOSE 5173
+# Build the React app for production
+RUN npm run build
+# Install serve globally
+RUN npm install -g serve
 
-# Start the frontend server
-CMD ["npm", "run", "dev"]
+
+# Expose the frontend port (the one used by the serve command)
+EXPOSE 5000
+
+# Start the production server to serve the build
+CMD ["serve", "-s", "dist", "-l", "5000"]
