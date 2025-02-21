@@ -68,11 +68,19 @@ stage('Build and Push Frontend') {
 
 
 
+
+
         stage('Deploy') {
             steps {
                 script {
+                    sh "docker ps"
+                    sh "docker ps -a"
                     sh "docker-compose down"
+                    sh "docker ps"
+                    sh "docker ps -a"
                     sh "docker-compose up -d"
+                    sh "docker ps"
+                    sh "docker ps -a"
                 }
             }
         }
