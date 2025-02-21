@@ -37,8 +37,8 @@ pipeline {
             sh "docker-compose build backend"
 
             // Tag the image with 'latest' and push it to Docker Hub
-            sh "docker tag \$(docker-compose images -q backend) $BACKEND_IMAGE:latest"
-            sh "docker push $BACKEND_IMAGE:latest"
+            sh "docker tag $(docker-compose images -q backend) $BACKEND_IMAGE:latest"
+            
         }
     }
 }
@@ -50,8 +50,8 @@ stage('Build and Push Frontend') {
             sh "docker-compose build frontend"
 
             // Tag the image with 'latest' and push it to Docker Hub
-            sh "docker tag \$(docker-compose images -q frontend) $FRONTEND_IMAGE:latest"
-            sh "docker push $FRONTEND_IMAGE:latest"
+            sh "docker tag $(docker-compose images -q frontend) $FRONTEND_IMAGE:latest"
+            // sh "docker push $FRONTEND_IMAGE:latest"
         }
     }
 }
