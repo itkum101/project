@@ -34,7 +34,7 @@ pipeline {
         stage('Build and Push Backend') {
             steps {
                 script {
-                    sh "cd project"
+                    
                     sh "docker-compose build backend"
                     sh "docker tag backend:latest $BACKEND_IMAGE:$BUILD_VERSION"
                     sh "docker push $BACKEND_IMAGE:$BUILD_VERSION"
