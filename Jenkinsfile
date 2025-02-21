@@ -22,29 +22,27 @@ pipeline {
         }
 
 
-stage('Build Services') {
-    timeout(time: 30, unit: 'MINUTES') {  // Timeout for this specific stage
-        parallel {
-            stage('Build Backend') {
-                steps {
-                    script {
-                        // Build backend service using Docker Compose
-                        sh "docker-compose build backend"
+ stage('Build Services') {
+            parallel {
+                stage('Build Backend') {
+                    steps {
+                        script {
+                            // Build backend service using Docker Compose
+                            sh "docker-compose build backend"
+                        }
                     }
                 }
-            }
 
-            stage('Build Frontend') {
-                steps {
-                    script {
-                        // Build frontend service using Docker Compose
-                        sh "docker-compose build frontend"
+                stage('Build Frontend') {
+                    steps {
+                        script {
+                            // Build frontend service using Docker Compose
+                            sh "docker-compose build frontend"
+                        }
                     }
                 }
             }
         }
-    }
-}
         stage('Deploy') {
             steps {
                 script {
