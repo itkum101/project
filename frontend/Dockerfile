@@ -9,7 +9,7 @@ COPY . .
 
 # Install dependencies
 RUN npm install
-
+    
 # Build the React app for production
 RUN npm run build
 # Install serve globally

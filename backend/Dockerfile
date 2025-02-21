@@ -1,18 +1,26 @@
-# Use Python 3.10 Slim as the base image
-FROM python:3.10-slim
+# Use Node.js 18 Alpine as the base image
+FROM node:18-alpine AS build
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the application files
+# Copy package.json and package-lock.json first
+COPY package*.json ./
+
+# Install dependencies (only production)
+RUN npm install --frozen-lockfile --only=production
+
+# Copy the rest of the application files
 COPY . .
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Build the React app for production
+RUN npm run build
 
-# Expose the port Flask runs on
-EXPOSE 5000
+# Use the same base image
+FROM build AS runtime
 
-# Command to run the application
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+# Expose the frontend port
+EXPOSE 8000
 
+# Start the production server
+CMD ["npx", "serve", "-s", "dist", "-l", "8000"]
