@@ -5,44 +5,44 @@ pipeline {
         DOCKER_HUB_USERNAME = "heyitssubedi"
         FRONTEND_IMAGE = "heyitssubedi/frontend"
         BACKEND_IMAGE = "heyitssubedi/backend"
-        GIT_COMMIT_HASH = ""
-        BUILD_VERSION = ""
     }
 
     stages {
         stage('Clone Repository') {
             steps {
                 script {
-                    git branch: 'main', url: 'https://github.com/itkum101/project.git'
-                    GIT_COMMIT_HASH = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-                    BUILD_VERSION = "build-${env.BUILD_NUMBER}-${GIT_COMMIT_HASH}"
+                    // Use shallow clone for faster Git cloning (only latest commit)
+                    git(
+                        branch: 'main',
+                        url: 'https://github.com/itkum101/project.git',
+                        depth: 1
+                    )
                 }
             }
         }
 
 
- stage('Build Backend') {
-    steps {
-        script {
-            // Build backend service using Docker Compose
-            sh "docker-compose build backend"
+ stage('Build Services') {
+            parallel {
+                stage('Build Backend') {
+                    steps {
+                        script {
+                            // Build backend service using Docker Compose
+                            sh "docker-compose build backend"
+                        }
+                    }
+                }
 
+                stage('Build Frontend') {
+                    steps {
+                        script {
+                            // Build frontend service using Docker Compose
+                            sh "docker-compose build frontend"
+                        }
+                    }
+                }
+            }
         }
-    }
-}
-
-stage('Build  Frontend') {
-    steps {
-        script {
-            // Build frontend service using Docker Compose
-            sh "docker-compose build frontend"
-        
-        
-
-        }
-    }
-}
-
         stage('Deploy') {
             steps {
                 script {
