@@ -36,14 +36,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
-### END SQL
-
 
 # 🚀 API Monitoring Metrics
 page_views = Counter('flask_app_page_views', 'Total page views')
-http_requests = Counter('flask_app_requests_total', 'Total HTTP requests', ['method', 'endpoint', 'status_code'])
-
-
 
 
 
@@ -61,22 +56,11 @@ class Feature(db.Model):
     def __repr__(self):
         return f'<Feature {self.title}>'
 
-# Track HTTP request duration and count
-@app.before_request
-def track_request():
-    request.start_time = time.time()
+@app.route("/error")
+def oops():
+    return ":(", 500
 
-@app.after_request
-def count_request(response):
-    duration = time.time() - request.start_time
-    # http_duration.observe(duration)
-    # response_size.observe(len(response.data))  # Track response size
-    http_requests.labels(method=request.method, endpoint=request.path, status_code=response.status_code).inc()
 
-    if response.status_code >= 400:
-        error_counter.labels(method=request.method, endpoint=request.path, status_code=response.status_code).inc()
-
-    return response
 
 @app.route('/metrics', methods=['GET'])
 def metrics():
