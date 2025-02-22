@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from prometheus_client import Counter, Histogram, generate_latest
+import time
 import os
 
 # Initialize Flask app
@@ -26,6 +28,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Initialize SQLAlchemy
 db = SQLAlchemy(app)
 
+# Define Prometheus metrics
+page_views = Counter('flask_app_page_views', 'Total page views')
+http_requests = Counter('flask_app_requests_total', 'Total HTTP requests', ['method', 'endpoint', 'status_code'])
+http_duration = Histogram('flask_app_request_duration_seconds', 'Histogram of HTTP request durations in seconds', buckets=[0.1, 0.5, 1, 2, 5])
+
+
 # Database Model for Feature
 class Feature(db.Model):
     """Feature Model for storing features"""
@@ -36,8 +44,26 @@ class Feature(db.Model):
     def __repr__(self):
         return f'<Feature {self.title}>'
 
+# Track HTTP request duration and count
+@app.before_request
+def track_request():
+    request.start_time = time.time()
 
+@app.after_request
+def count_request(response):
+    # Track request duration
+    duration = time.time() - request.start_time
+    http_duration.observe(duration)
 
+    # Count HTTP requests by method, endpoint, and status code
+    http_requests.labels(method=request.method, endpoint=request.path, status_code=response.status_code).inc()
+
+    return response
+
+@app.route('/metrics', methods=['GET'])
+def metrics():
+    page_views.inc()  # Increment page views counter
+    return generate_latest(), 200, {'Content-Type': 'text/plain; version=0.0.4; charset=utf-8'}
 
 
 # Route for handling features - fetch and add
@@ -58,6 +84,10 @@ def features():
         db.session.add(new_feature)
         db.session.commit()
         return jsonify({'message': 'Feature added successfully'}), 201
+# Test route to verify server is running
+@app.route('/', methods=['GET'])
+def home():
+    return "Flask server is running!"
 
 # @app.route('/init', methods=['GET'])
 # def start():
