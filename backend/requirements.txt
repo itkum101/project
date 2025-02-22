@@ -6,3 +6,4 @@ PyMySQL
 cryptography>=38.0.0
 gunicorn
 prometheus_client
+psutil
