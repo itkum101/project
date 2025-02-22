@@ -42,41 +42,11 @@ db = SQLAlchemy(app)
 # 🚀 API Monitoring Metrics
 page_views = Counter('flask_app_page_views', 'Total page views')
 http_requests = Counter('flask_app_requests_total', 'Total HTTP requests', ['method', 'endpoint', 'status_code'])
-http_duration = Histogram('flask_app_request_duration_seconds', 'Histogram of HTTP request durations in seconds', buckets=[0.1, 0.5, 1, 2, 5])
-error_counter = Counter('flask_app_http_errors_total', 'Total HTTP errors', ['method', 'endpoint', 'status_code'])
-response_size = Histogram('flask_app_response_size_bytes', 'Size of HTTP responses in bytes', buckets=[100, 500, 1000, 5000, 10000])
 
 
-# 🖥️ System Metrics (CPU, Memory, Disk, Network, Threads)
-cpu_usage = Gauge('flask_cpu_usage_percent', 'CPU usage percentage')
-memory_usage = Gauge('flask_memory_usage_percent', 'Memory usage percentage')
-disk_usage = Gauge('flask_disk_usage_percent', 'Disk usage percentage')
-network_sent = Gauge('flask_network_bytes_sent', 'Total network bytes sent')
-network_received = Gauge('flask_network_bytes_received', 'Total network bytes received')
-thread_count = Gauge('flask_thread_count', 'Number of active threads')
-process_count = Gauge('flask_process_count', 'Number of running processes')
-uptime = Gauge('flask_uptime_seconds', 'Server uptime in seconds')
 
 
-# 👤 User Metrics
-active_users = Gauge('flask_active_users', 'Number of active users')
-# active_sessions = Gauge('flask_active_sessions', 'Number of active user sessions')
 
-
-# 💾 Database Query Metrics
-db_query_time = Summary('flask_db_query_duration_seconds', 'Time taken for database queries')
-
-
-# 📊 Update System Metrics
-def update_system_metrics():
-    cpu_usage.set(psutil.cpu_percent(interval=1))
-    memory_usage.set(psutil.virtual_memory().percent)
-    disk_usage.set(psutil.disk_usage('/').percent)
-    network_sent.set(psutil.net_io_counters().bytes_sent)
-    network_received.set(psutil.net_io_counters().bytes_recv())
-    thread_count.set(threading.active_count())
-    process_count.set(len(psutil.pids()))
-    uptime.set(time.time() - start_time)
 
 
 
@@ -99,8 +69,8 @@ def track_request():
 @app.after_request
 def count_request(response):
     duration = time.time() - request.start_time
-    http_duration.observe(duration)
-    response_size.observe(len(response.data))  # Track response size
+    # http_duration.observe(duration)
+    # response_size.observe(len(response.data))  # Track response size
     http_requests.labels(method=request.method, endpoint=request.path, status_code=response.status_code).inc()
 
     if response.status_code >= 400:
@@ -117,14 +87,13 @@ def metrics():
 # Route for handling features - fetch and add
 @app.route('/features', methods=['GET', 'POST'])
 def features():
-    start_time = time.time()
+    page_views.inc() 
     with app.app_context():
         db.create_all()  # Create all tables defined by the models
         add_predefined_data()  # Add predefined features if not already present
     """Route to handle features - fetch and add"""
     if request.method == 'GET':
         features = Feature.query.all()
-        db_query_time.observe(time.time() - start_time)
         return jsonify([{'id': f.id, 'title': f.title, 'description': f.description} for f in features])
     
     elif request.method == 'POST':
@@ -132,7 +101,6 @@ def features():
         new_feature = Feature(title=data['title'], description=data['description'])
         db.session.add(new_feature)
         db.session.commit()
-        db_query_time.observe(time.time() - start_time)
         return jsonify({'message': 'Feature added successfully'}), 201
     
 
@@ -140,6 +108,7 @@ def features():
 # 📌 API Route: Home
 @app.route('/', methods=['GET'])
 def home():
+    page_views.inc() 
     return "Flask server is running with advanced Prometheus metrics!"
 
 
@@ -165,5 +134,4 @@ def add_predefined_data():
 
 
 if __name__ == '__main__':
-    start_time = time.time() 
     app.run(host='0.0.0.0', port=5000)
