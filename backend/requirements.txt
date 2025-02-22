@@ -7,3 +7,4 @@ cryptography>=38.0.0
 gunicorn
 prometheus_client
 psutil
+prometheus-flask-exporter

@@ -7,9 +7,11 @@ import os
 import psutil
 import random
 import threading
+from prometheus_flask_exporter import PrometheusMetrics
 
 # Initialize Flask app
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
 CORS(app)  # Enable Cross-Origin Resource Sharing
 
 
