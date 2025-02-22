@@ -12,8 +12,6 @@ import threading
 app = Flask(__name__)
 CORS(app)  # Enable Cross-Origin Resource Sharing
 
-# Initialize the global start_time for uptime calculation
-start_time = time.time()
 
 ##START SQL
 # Read environment variables for database configuration
@@ -35,7 +33,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Initialize SQLAlchemy
 db = SQLAlchemy(app)
 
+
 ### END SQL
+
 
 # 🚀 API Monitoring Metrics
 page_views = Counter('flask_app_page_views', 'Total page views')
@@ -43,6 +43,7 @@ http_requests = Counter('flask_app_requests_total', 'Total HTTP requests', ['met
 http_duration = Histogram('flask_app_request_duration_seconds', 'Histogram of HTTP request durations in seconds', buckets=[0.1, 0.5, 1, 2, 5])
 error_counter = Counter('flask_app_http_errors_total', 'Total HTTP errors', ['method', 'endpoint', 'status_code'])
 response_size = Histogram('flask_app_response_size_bytes', 'Size of HTTP responses in bytes', buckets=[100, 500, 1000, 5000, 10000])
+
 
 # 🖥️ System Metrics (CPU, Memory, Disk, Network, Threads)
 cpu_usage = Gauge('flask_cpu_usage_percent', 'CPU usage percentage')
@@ -54,11 +55,15 @@ thread_count = Gauge('flask_thread_count', 'Number of active threads')
 process_count = Gauge('flask_process_count', 'Number of running processes')
 uptime = Gauge('flask_uptime_seconds', 'Server uptime in seconds')
 
+
 # 👤 User Metrics
 active_users = Gauge('flask_active_users', 'Number of active users')
+# active_sessions = Gauge('flask_active_sessions', 'Number of active user sessions')
+
 
 # 💾 Database Query Metrics
 db_query_time = Summary('flask_db_query_duration_seconds', 'Time taken for database queries')
+
 
 # 📊 Update System Metrics
 def update_system_metrics():
@@ -70,6 +75,9 @@ def update_system_metrics():
     thread_count.set(threading.active_count())
     process_count.set(len(psutil.pids()))
     uptime.set(time.time() - start_time)
+
+
+
 
 # Database Model for Feature
 class Feature(db.Model):
@@ -103,10 +111,14 @@ def metrics():
     page_views.inc()  # Increment page views counter
     return generate_latest(), 200, {'Content-Type': 'text/plain; version=0.0.4; charset=utf-8'}
 
+
 # Route for handling features - fetch and add
 @app.route('/features', methods=['GET', 'POST'])
 def features():
     start_time = time.time()
+    with app.app_context():
+        db.create_all()  # Create all tables defined by the models
+        add_predefined_data()  # Add predefined features if not already present
     """Route to handle features - fetch and add"""
     if request.method == 'GET':
         features = Feature.query.all()
@@ -120,6 +132,7 @@ def features():
         db.session.commit()
         db_query_time.observe(time.time() - start_time)
         return jsonify({'message': 'Feature added successfully'}), 201
+    
 
 # Test route to verify server is running
 # 📌 API Route: Home
@@ -127,9 +140,13 @@ def features():
 def home():
     return "Flask server is running with advanced Prometheus metrics!"
 
+
+
 # Adding predefined features to the database if they don't exist
 def add_predefined_data():
     """Predefine features if not already in the database"""
+    
+    # Predefined features
     predefined_features = [
         {"title": "Decentralized Inference", "description": "Run large language models across multiple peers, enabling distributed and efficient computation."},
         {"title": "WebGPU Integration", "description": "Leverage the power of modern GPUs directly from your browser for accelerated AI processing."},
@@ -144,10 +161,7 @@ def add_predefined_data():
     
     db.session.commit()
 
-# Initialize the database and add predefined features
-with app.app_context():
-    db.create_all()  # Create all tables defined by the models
-    add_predefined_data()  # Add predefined features if not already present
 
 if __name__ == '__main__':
+    start_time = time.time() 
     app.run(host='0.0.0.0', port=5000)
