@@ -17,7 +17,7 @@ const InferenceDisplay = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://20.244.34.133:8084/?input_prompt=${inputPrompt}`
+        `https://inference.subedimukti.com.np/?input_prompt=${inputPrompt}`
       );
       const result = await response.json();
       setData(result);
@@ -31,7 +31,7 @@ const InferenceDisplay = () => {
 
   const fetchLayers = async () => {
     try {
-      const response = await fetch("http://20.244.34.133:8084/display");
+      const response = await fetch("https://inference.subedimukti.com.np/display");
       const result = await response.json();
       setLayers(result.layers);
     } catch (error) {
@@ -41,7 +41,7 @@ const InferenceDisplay = () => {
 
   const clearLayers = async () => {
     try {
-      const response = await fetch("http://20.244.34.133:8084/clear", {
+      const response = await fetch("https://inference.subedimukti.com.np/clear", {
         method: "POST",
       });
       const result = await response.json();
