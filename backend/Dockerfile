@@ -8,7 +8,7 @@ WORKDIR /app
 # Copy only requirements first to leverage caching
 COPY requirements.txt .
 
-RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy the application files
 COPY . .
