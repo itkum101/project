@@ -68,6 +68,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    kubectl delete -f *.yaml
                     kubectl apply -f namespace.yaml
                     kubectl apply -f configmap.yaml
                     kubectl apply -f secret.yaml
