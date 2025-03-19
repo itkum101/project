@@ -53,16 +53,16 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Setup Kubeconfig') {
-            steps {
-                script {
-                    withCredentials([file(credentialsId: 'kubeconfig-credentials', variable: 'KUBECONFIG')]) {
-                        sh "export KUBECONFIG=$KUBECONFIG"
-                        sh "kubectl config view"  // Debugging: Verify if kubeconfig is set
-                    }
-                }
-            }
-        }
+        // stage('Setup Kubeconfig') {
+        //     steps {
+        //         script {
+        //             withCredentials([file(credentialsId: 'kubeconfig-credentials', variable: 'KUBECONFIG')]) {
+        //                 sh "export KUBECONFIG=$KUBECONFIG"
+        //                 sh "kubectl config view"  // Debugging: Verify if kubeconfig is set
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Deploy to Kubernetes') {
     steps {
