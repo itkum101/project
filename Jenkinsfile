@@ -43,11 +43,26 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+
+        // stage('Deploy') {
+        //     steps {
+        //         script {
+        //             sh "docker-compose down"
+        //             sh "docker-compose up -d"
+        //         }
+        //     }
+        // }
+          stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    sh "docker-compose down"
-                    sh "docker-compose up -d"
+                    sh "kubectl apply -f namespace.yaml"
+                    sh "kubectl apply -f configmap.yaml"
+                    sh "kubectl apply -f secret.yaml"
+                    sh "kubectl apply -f mysql_statefulset.yaml"
+                    sh "kubectl apply -f backend-deployment.yaml"
+                    sh "kubectl apply -f frontend-deployment.yaml"
+                    sh "kubectl apply -f service.yaml"
+                    sh "kubectl apply -f ingress.yaml"
                 }
             }
         }
