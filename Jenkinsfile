@@ -5,6 +5,7 @@ pipeline {
         DOCKER_HUB_USERNAME = "heyitssubedi"
         FRONTEND_IMAGE = "heyitssubedi/frontend"
         BACKEND_IMAGE = "heyitssubedi/backend"
+        KUBECONFIG = "$WORKSPACE/kubeconfig"
     }
 
     stages {
@@ -52,6 +53,17 @@ pipeline {
         //         }
         //     }
         // }
+        stage('Setup Kubeconfig') {
+            steps {
+                script {
+                    withCredentials([file(credentialsId: 'kubeconfig-credentials', variable: 'KUBECONFIG')]) {
+                        sh "export KUBECONFIG=$KUBECONFIG"
+                        sh "kubectl config view"  // Debugging: Verify if kubeconfig is set
+                    }
+                }
+            }
+        }
+
           stage('Deploy to Kubernetes') {
             steps {
                 script {
