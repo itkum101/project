@@ -63,7 +63,7 @@ pipeline {
         //         }
         //     }
         // }
- stages {
+ 
         stage('Deploying in Kubernetes') {
             steps {
                 script {
@@ -80,7 +80,7 @@ pipeline {
                 }
             }
         }
-    }
+    
       
 
 
