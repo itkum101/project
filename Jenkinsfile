@@ -63,23 +63,23 @@ pipeline {
         //         }
         //     }
         // }
-
-        stage('Deploy to Kubernetes') {
+stage('Deploying in Kubernetes') {
     steps {
         script {
-            // Apply YAML files with validation disabled
-            sh "kubectl apply -f namespace.yaml --validate=false"
-            sh "kubectl apply -f configmap.yaml --validate=false"
-            sh "kubectl apply -f secret.yaml --validate=false"
-            sh "kubectl apply -f mysql_statefulset.yaml --validate=false"
-            sh "kubectl apply -f backend-deployment.yaml --validate=false"
-            sh "kubectl apply -f frontend-deployment.yaml --validate=false"
-            sh "kubectl apply -f service.yaml --validate=false"
-            sh "kubectl apply -f ingress.yaml --validate=false"
+            kubernetesDeploy(configs: [
+                "namespace.yaml", 
+                "configmap.yaml", 
+                "secret.yaml", 
+                "mysql_statefulset.yaml", 
+                "backend-deployment.yaml", 
+                "frontend-deployment.yaml", 
+                "service.yaml", 
+                "ingress.yaml"
+            ])
         }
     }
 }
-
+      
 
 
                 stage('Docker Login') {
