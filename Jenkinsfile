@@ -1,5 +1,5 @@
 pipeline {
-     agent any
+    
 
     environment {
         DOCKER_HUB_USERNAME = "heyitssubedi"
@@ -53,19 +53,22 @@ pipeline {
         //         }
         //     }
         // }
-    
+        // stage('Setup Kubeconfig') {
+        //     steps {
+        //         script {
+        //             withCredentials([file(credentialsId: 'kubeconfig-credentials', variable: 'KUBECONFIG')]) {
+        //                 sh "export KUBECONFIG=$KUBECONFIG"
+        //                 sh "kubectl config view"  // Debugging: Verify if kubeconfig is set
+        //             }
+        //         }
+        //     }
+        // }
 
           stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    sh "kubectl apply -f namespace.yaml"
-                    sh "kubectl apply -f configmap.yaml"
-                    sh "kubectl apply -f secret.yaml"
-                    sh "kubectl apply -f mysql_statefulset.yaml"
-                    sh "kubectl apply -f backend-deployment.yaml"
-                    sh "kubectl apply -f frontend-deployment.yaml"
-                    sh "kubectl apply -f service.yaml"
-                    sh "kubectl apply -f ingress.yaml"
+                    sh "kubectl apply -f *.yaml --validate=false"
+                    
                 }
             }
         }
