@@ -1,13 +1,5 @@
 pipeline {
-     agent {
-        kubernetes {
-            // Define the Kubernetes cloud defined in your Jenkins Configuration
-            cloud 'kubernetes'  
-            // Specify the Kubernetes container template
-            label 'my-k8s-agent'  
-            defaultContainer 'jnlp'  // Default container for the agent (typically 'jnlp')
-        }
-    }
+     agent any
 
     environment {
         DOCKER_HUB_USERNAME = "heyitssubedi"
