@@ -53,25 +53,33 @@ pipeline {
         //         }
         //     }
         // }
-        // stage('Setup Kubeconfig') {
-        //     steps {
-        //         script {
-        //             withCredentials([file(credentialsId: 'kubeconfig-credentials', variable: 'KUBECONFIG')]) {
-        //                 sh "export KUBECONFIG=$KUBECONFIG"
-        //                 sh "kubectl config view"  // Debugging: Verify if kubeconfig is set
-        //             }
-        //         }
-        //     }
-        // }
-
-          stage('Deploy to Kubernetes') {
+        stage('Setup Kubeconfig') {
             steps {
                 script {
-                    sh "kubectl apply -f *.yaml --validate=false"
-                    
+                    withCredentials([file(credentialsId: 'kubeconfig-credentials', variable: 'KUBECONFIG')]) {
+                        sh "export KUBECONFIG=$KUBECONFIG"
+                        sh "kubectl config view"  // Debugging: Verify if kubeconfig is set
+                    }
                 }
             }
         }
+
+        stage('Deploy to Kubernetes') {
+    steps {
+        script {
+            // Apply YAML files with validation disabled
+            sh "kubectl apply -f namespace.yaml --validate=false"
+            sh "kubectl apply -f configmap.yaml --validate=false"
+            sh "kubectl apply -f secret.yaml --validate=false"
+            sh "kubectl apply -f mysql_statefulset.yaml --validate=false"
+            sh "kubectl apply -f backend-deployment.yaml --validate=false"
+            sh "kubectl apply -f frontend-deployment.yaml --validate=false"
+            sh "kubectl apply -f service.yaml --validate=false"
+            sh "kubectl apply -f ingress.yaml --validate=false"
+        }
+    }
+}
+
 
 
                 stage('Docker Login') {
