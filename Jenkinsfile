@@ -64,30 +64,6 @@ pipeline {
         //     }
         // }
  
-        stage('Deploying in Kubernetes') {
-            steps {
-                script {
-                    sh '''
-
-                    kubectl delete -f backend-deployment.yaml
-                    kubectl delete -f frontend-deployment.yaml
-                    
-                    kubectl apply -f namespace.yaml
-                    kubectl apply -f configmap.yaml
-                    kubectl apply -f secret.yaml
-                    kubectl apply -f mysql_statefulset.yaml
-                    kubectl apply -f backend-deployment.yaml
-                    kubectl apply -f frontend-deployment.yaml
-                    kubectl apply -f service.yaml
-                    kubectl apply -f ingress.yaml
-                    '''
-                }
-            }
-        }
-    
-      
-
-
                 stage('Docker Login') {
             steps {
                 script {
@@ -127,6 +103,32 @@ stage(' Push Frontend') {
 }
 
 
+
+        stage('Deploying in Kubernetes') {
+            steps {
+                script {
+                    sh '''
+
+                    kubectl delete -f backend-deployment.yaml
+                    kubectl delete -f frontend-deployment.yaml
+                    
+                    kubectl apply -f namespace.yaml
+                    kubectl apply -f configmap.yaml
+                    kubectl apply -f secret.yaml
+                    kubectl apply -f mysql_statefulset.yaml
+                    kubectl apply -f backend-deployment.yaml
+                    kubectl apply -f frontend-deployment.yaml
+                    kubectl apply -f service.yaml
+                    kubectl apply -f ingress.yaml
+                    '''
+                }
+            }
+        }
+    
+      
+
+
+ 
 
 
 
