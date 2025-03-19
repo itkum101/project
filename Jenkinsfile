@@ -5,7 +5,7 @@ pipeline {
         DOCKER_HUB_USERNAME = "heyitssubedi"
         FRONTEND_IMAGE = "heyitssubedi/frontend"
         BACKEND_IMAGE = "heyitssubedi/backend"
-        KUBECONFIG = "$WORKSPACE/kubeconfig"
+         KUBECONFIG = '/var/jenkins_home/kubeconfig'
     }
 
     stages {
@@ -63,22 +63,24 @@ pipeline {
         //         }
         //     }
         // }
-stage('Deploying in Kubernetes') {
-    steps {
-        script {
-            kubernetesDeploy(configs: [
-                "namespace.yaml", 
-                "configmap.yaml", 
-                "secret.yaml", 
-                "mysql_statefulset.yaml", 
-                "backend-deployment.yaml", 
-                "frontend-deployment.yaml", 
-                "service.yaml", 
-                "ingress.yaml"
-            ])
+ stages {
+        stage('Deploying in Kubernetes') {
+            steps {
+                script {
+                    sh '''
+                    kubectl apply -f namespace.yaml
+                    kubectl apply -f configmap.yaml
+                    kubectl apply -f secret.yaml
+                    kubectl apply -f mysql_statefulset.yaml
+                    kubectl apply -f backend-deployment.yaml
+                    kubectl apply -f frontend-deployment.yaml
+                    kubectl apply -f service.yaml
+                    kubectl apply -f ingress.yaml
+                    '''
+                }
+            }
         }
     }
-}
       
 
 
