@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: heyitssubedi/frontend
+        image: heyitssubedi/frontend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
