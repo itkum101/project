@@ -1,5 +1,13 @@
 pipeline {
-    agent any
+     agent {
+        kubernetes {
+            // Define the Kubernetes cloud defined in your Jenkins Configuration
+            cloud 'kubernetes'  
+            // Specify the Kubernetes container template
+            label 'my-k8s-agent'  
+            defaultContainer 'jnlp'  // Default container for the agent (typically 'jnlp')
+        }
+    }
 
     environment {
         DOCKER_HUB_USERNAME = "heyitssubedi"
@@ -53,16 +61,7 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Setup Kubeconfig') {
-            steps {
-                script {
-                    withCredentials([file(credentialsId: 'kubeconfig-credentials', variable: 'KUBECONFIG')]) {
-                        sh "export KUBECONFIG=$KUBECONFIG"
-                        sh "kubectl config view"  // Debugging: Verify if kubeconfig is set
-                    }
-                }
-            }
-        }
+    
 
           stage('Deploy to Kubernetes') {
             steps {
