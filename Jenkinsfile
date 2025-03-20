@@ -79,29 +79,6 @@ pipeline {
             }
         }
 
- stage(' Push Backend') {
-    steps {
-        script {
-
-            
-            // Push the image directly without tagging
-           sh 'docker tag $(docker images -q backend) $BACKEND_IMAGE:latest && docker push $BACKEND_IMAGE:latest'
-
-        }
-    }
-}
-
-stage(' Push Frontend') {
-    steps {
-        script {
-            
-            // Push the image directly without tagging
-             sh 'docker tag $(docker images -q frontend) $FRONTEND_IMAGE:latest && docker push $FRONTEND_IMAGE:latest'
-
-        }
-    }
-}
-
 
 
         stage('Deploying in Kubernetes') {
@@ -126,6 +103,29 @@ stage(' Push Frontend') {
         }
     
       
+
+ stage(' Push Backend') {
+    steps {
+        script {
+
+            
+            // Push the image directly without tagging
+           sh 'docker tag $(docker images -q backend) $BACKEND_IMAGE:latest && docker push $BACKEND_IMAGE:latest'
+
+        }
+    }
+}
+
+stage(' Push Frontend') {
+    steps {
+        script {
+            
+            // Push the image directly without tagging
+             sh 'docker tag $(docker images -q frontend) $FRONTEND_IMAGE:latest && docker push $FRONTEND_IMAGE:latest'
+
+        }
+    }
+}
 
 
  
