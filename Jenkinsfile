@@ -71,13 +71,14 @@ pipeline {
 
                     kubectl delete -f backend-deployment.yaml
                     kubectl delete -f frontend-deployment.yaml
+                    kubectl apply -f backend-deployment.yaml
+                    kubectl apply -f frontend-deployment.yaml
                     
                     kubectl apply -f namespace.yaml
                     kubectl apply -f configmap.yaml
                     kubectl apply -f secret.yaml
                     kubectl apply -f mysql_statefulset.yaml
-                    kubectl apply -f backend-deployment.yaml
-                    kubectl apply -f frontend-deployment.yaml
+                    
                     kubectl apply -f service.yaml
                     kubectl apply -f ingress.yaml
                     '''
@@ -107,7 +108,7 @@ pipeline {
 
             
             // Push the image directly without tagging
-           sh 'docker tag $(docker images -q backend) $BACKEND_IMAGE:latest && docker push $BACKEND_IMAGE:latest'
+           sh 'docker tag $(docker images -q heyitssubedi/backend) $BACKEND_IMAGE:latest && docker push $BACKEND_IMAGE:latest'
 
         }
     }
@@ -118,7 +119,7 @@ stage(' Push Frontend') {
         script {
             
             // Push the image directly without tagging
-             sh 'docker tag $(docker images -q frontend) $FRONTEND_IMAGE:latest && docker push $FRONTEND_IMAGE:latest'
+             sh 'docker tag $(docker images -q heyitssubedi/frontend) $FRONTEND_IMAGE:latest && docker push $FRONTEND_IMAGE:latest'
 
         }
     }
