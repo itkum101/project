@@ -89,7 +89,8 @@ pipeline {
                 }
             }
         }
-
+stage('Push Images'){
+    parallel {
  stage(' Push Backend') {
     steps {
         script {
@@ -112,7 +113,9 @@ stage(' Push Frontend') {
         }
     }
 }
-
+    }
+    
+}
 
 
 

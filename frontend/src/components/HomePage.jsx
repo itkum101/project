@@ -10,7 +10,7 @@ const HomePage = () => {
           Decentralized Large-Language Model Inference and Fine-Tuning. 
           Empowering AI with own  EX ABCDEFGHIJKLMNOPSSS !!.
         </p>
-        <button className="cta-button">Explore Features</button>
+        <button className="cta-button">Explore Features yes</button>
       </div>
     </section>
   );
