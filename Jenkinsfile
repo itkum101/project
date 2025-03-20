@@ -45,6 +45,16 @@ pipeline {
             }
         }
 
+  stage('Prune Images') {
+                    steps {
+                        script {
+                            // Build frontend service using Docker Compose
+                            sh "docker image prune -f"
+                        }
+                    }
+                }
+            }
+        }
         // stage('Deploy') {
         //     steps {
         //         script {
@@ -73,7 +83,7 @@ pipeline {
                     kubectl delete -f frontend-deployment.yaml
                     kubectl apply -f backend-deployment.yaml
                     kubectl apply -f frontend-deployment.yaml
-                    
+
                     kubectl apply -f namespace.yaml
                     kubectl apply -f configmap.yaml
                     kubectl apply -f secret.yaml
