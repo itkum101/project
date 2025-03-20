@@ -96,7 +96,7 @@ pipeline {
 
             
             // Push the image directly without tagging
-           sh 'docker tag $(docker images -q heyitssubedi/backend) $BACKEND_IMAGE:latest && docker push $BACKEND_IMAGE:latest'
+           sh 'docker tag $(docker images -q heyitssubedi/backend:latest) $BACKEND_IMAGE:latest && docker push $BACKEND_IMAGE:latest'
 
         }
     }
@@ -107,7 +107,7 @@ stage(' Push Frontend') {
         script {
             
             // Push the image directly without tagging
-             sh 'docker tag $(docker images -q heyitssubedi/frontend) $FRONTEND_IMAGE:latest && docker push $FRONTEND_IMAGE:latest'
+             sh 'docker tag $(docker images -q heyitssubedi/frontend:latest) $FRONTEND_IMAGE:latest && docker push $FRONTEND_IMAGE:latest'
 
         }
     }
