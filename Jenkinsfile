@@ -42,19 +42,12 @@ pipeline {
                         }
                     }
                 }
+
+                
             }
         }
 
-  stage('Prune Images') {
-                    steps {
-                        script {
-                            // Build frontend service using Docker Compose
-                            sh "docker image prune -f"
-                        }
-                    }
-                }
-            }
-        }
+
         // stage('Deploy') {
         //     steps {
         //         script {
@@ -73,7 +66,14 @@ pipeline {
         //         }
         //     }
         // }
- 
+ stage('Prune Images') {
+                    steps {
+                        script {
+                            // Build frontend service using Docker Compose
+                            sh "docker image prune -f"
+                        }
+                    }
+                }
         stage('Deploying in Kubernetes') {
             steps {
                 script {
