@@ -6,6 +6,7 @@ pipeline {
         FRONTEND_IMAGE = "heyitssubedi/frontend"
         BACKEND_IMAGE = "heyitssubedi/backend"
         KUBECONFIG = '/var/jenkins_home/kubeconfig' // Best practice: Store in Global Credentials.
+        RECIPIENTS = 'nandindaya@gmail.com'
     }
 
     stages {
@@ -115,5 +116,30 @@ pipeline {
         //         }
         //     }
         // }
+
+         // Add email notifications here
+        post {
+            success {
+                emailext (
+                    subject: "Build Success: ${JOB_NAME}",
+                    body: "The Jenkins build was successful!\n\nPlease check the Jenkins job for more details.",
+                    to: "$RECIPIENTS"
+                )
+            }
+            failure {
+                emailext (
+                    subject: "Build Failure: ${JOB_NAME}",
+                    body: "The Jenkins build failed!\n\nPlease check the Jenkins job for more details.",
+                    to: "$RECIPIENTS"
+                )
+            }
+            unstable {
+                emailext (
+                    subject: "Build Unstable: ${JOB_NAME}",
+                    body: "The Jenkins build is unstable.\n\nPlease check the Jenkins job for more details.",
+                    to: "$RECIPIENTS"
+                )
+            }
+        }
     }
 }

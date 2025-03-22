@@ -7,7 +7,7 @@ const HomePage = () => {
       <div className="home-content">
         <h1 className="home-title">  Welcome to De-LlMIT!!</h1>
         <p className="home-tagline">
-          Decentralized Large LM Inference and Fine-Tuning. 
+          Decentralized Large Large M Inference and Fine-Tuning. 
           Empowering AI with own edge device !!. 
         </p>
         <button className="cta-button">Explore Features   </button>
