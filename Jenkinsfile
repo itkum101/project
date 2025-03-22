@@ -53,6 +53,17 @@ pipeline {
             }
         }
 
+        stage('Rollout deploy') {
+            steps {
+                script {
+                    // Apply Kubernetes configurations
+                    sh '''
+                   kubectl rollout restart deployment frontend -n prod
+                    '''
+                }
+            }
+        }
+
         stage('Docker Login') {
             steps {
                 script {
@@ -86,16 +97,7 @@ pipeline {
             }
         }
 
-        stage('Rollout deploy') {
-            steps {
-                script {
-                    // Apply Kubernetes configurations
-                    sh '''
-                   kubectl rollout restart deployment frontend -n prod
-                    '''
-                }
-            }
-        }
+        
 
         // stage('Deploy to Kubernetes') {
         //     steps {
