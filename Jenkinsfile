@@ -53,17 +53,6 @@ pipeline {
             }
         }
 
-        stage('Rollout deploy') {
-            steps {
-                script {
-                    // Apply Kubernetes configurations
-                    sh '''
-                   kubectl rollout restart deployment frontend -n prod
-                    '''
-                }
-            }
-        }
-
         stage('Docker Login') {
             steps {
                 script {
@@ -93,6 +82,18 @@ pipeline {
                             sh 'docker tag $(docker images -q heyitssubedi/frontend:latest) $FRONTEND_IMAGE:latest && docker push $FRONTEND_IMAGE:latest'
                         }
                     }
+                }
+            }
+        }
+
+        
+        stage('Rollout deploy') {
+            steps {
+                script {
+                    // Apply Kubernetes configurations
+                    sh '''
+                   kubectl rollout restart deployment frontend -n prod
+                    '''
                 }
             }
         }

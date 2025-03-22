@@ -16,7 +16,7 @@ spec:
       containers:
       - name: frontend
         image: heyitssubedi/frontend:latest
-        imagePullPolicy: IfNotPresent
+        # imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
 
@@ -40,7 +40,7 @@ spec:
       containers:
         - name: backend
           image: heyitssubedi/backend:latest
-          imagePullPolicy: IfNotPresent
+          # imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
           envFrom:
