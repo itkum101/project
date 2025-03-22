@@ -99,28 +99,28 @@ pipeline {
         }
     }
 
-//     // Post block moved here, outside the stages
-//     post {
-//         success {
-//             emailext (
-//                 subject: "Build Success: ${JOB_NAME}",
-//                 body: "The Jenkins build was successful!\n\nPlease check the Jenkins job for more details.",
-//                 to: "$RECIPIENTS"
-//             )
-//         }
-//         failure {
-//             emailext (
-//                 subject: "Build Failure: ${JOB_NAME}",
-//                 body: "The Jenkins build failed!\n\nPlease check the Jenkins job for more details.",
-//                 to: "$RECIPIENTS"
-//             )
-//         }
-//         unstable {
-//             emailext (
-//                 subject: "Build Unstable: ${JOB_NAME}",
-//                 body: "The Jenkins build is unstable.\n\nPlease check the Jenkins job for more details.",
-//                 to: "$RECIPIENTS"
-//             )
-//         }
-//     }
-// }
+    // Post block moved here, outside the stages
+    post {
+        success {
+            emailext (
+                subject: "Build Success: ${JOB_NAME}",
+                body: "The Jenkins build was successful!\n\nPlease check the Jenkins job for more details.",
+                to: "$RECIPIENTS"
+            )
+        }
+        failure {
+            emailext (
+                subject: "Build Failure: ${JOB_NAME}",
+                body: "The Jenkins build failed!\n\nPlease check the Jenkins job for more details.",
+                to: "$RECIPIENTS"
+            )
+        }
+        unstable {
+            emailext (
+                subject: "Build Unstable: ${JOB_NAME}",
+                body: "The Jenkins build is unstable.\n\nPlease check the Jenkins job for more details.",
+                to: "$RECIPIENTS"
+            )
+        }
+    }
+}
